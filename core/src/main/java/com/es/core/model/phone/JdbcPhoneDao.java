@@ -1,6 +1,7 @@
 package com.es.core.model.phone;
 
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import com.es.core.model.phone.handler.PhoneRowCallbackHandler;
+import com.es.core.model.phone.handler.ProductRowCallbackHandler;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -9,9 +10,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class JdbcPhoneDao implements PhoneDao{
+public class JdbcPhoneDao implements PhoneDao {
     @Resource
     private JdbcTemplate jdbcTemplate;
+    private static final String FIND_ALL_SQL =
+            "SELECT * FROM (SELECT * FROM phones OFFSET %d LIMIT %d) as phones_partial " +
+                    "JOIN phone2color on phones_partial.id = phone2color.phoneId " +
+                    "JOIN colors on colors.id = phone2color.colorId";
+
+    private final ProductRowCallbackHandler<Phone> handler = new PhoneRowCallbackHandler();
 
     public Optional<Phone> get(final Long key) {
         throw new UnsupportedOperationException("TODO");
@@ -22,6 +29,8 @@ public class JdbcPhoneDao implements PhoneDao{
     }
 
     public List<Phone> findAll(int offset, int limit) {
-        return jdbcTemplate.query("select * from phones offset " + offset + " limit " + limit, new BeanPropertyRowMapper(Phone.class));
+        String query = String.format(FIND_ALL_SQL, offset, limit);
+        jdbcTemplate.query(query, handler);
+        return handler.getResults();
     }
 }
