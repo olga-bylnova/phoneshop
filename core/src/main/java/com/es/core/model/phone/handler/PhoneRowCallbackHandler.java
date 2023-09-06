@@ -21,20 +21,23 @@ public class PhoneRowCallbackHandler implements ProductRowCallbackHandler<Phone>
 
     @Override
     public void processRow(ResultSet resultSet) throws SQLException {
-        Long phoneId = resultSet.getLong(PHONE_ID);
+        Long phoneId = resultSet.getLong(ID);
+        Long colorId = resultSet.getLong(COLOR_ID);
+
         Phone phone = results.computeIfAbsent(phoneId, (key) ->
         {
             try {
-                Phone result = phoneRowMapper.mapRow(resultSet, resultSet.getRow());
-                result.setColors(new HashSet<>());
-                return result;
+                return phoneRowMapper.mapRow(resultSet, resultSet.getRow());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         });
-
-        Color color = new Color(resultSet.getLong(ID), resultSet.getString(CODE));
-        phone.getColors().add(color);
+        if (colorId != 0) {
+            if (phone.getColors() == Collections.EMPTY_SET) {
+                phone.setColors(new HashSet<>());
+            }
+            phone.getColors().add(new Color(resultSet.getLong(COLOR_ID), resultSet.getString(CODE)));
+        }
     }
 
     @Override

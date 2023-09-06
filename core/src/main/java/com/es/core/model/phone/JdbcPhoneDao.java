@@ -15,8 +15,8 @@ public class JdbcPhoneDao implements PhoneDao {
     private JdbcTemplate jdbcTemplate;
     private static final String FIND_ALL_SQL =
             "SELECT * FROM (SELECT * FROM phones OFFSET %d LIMIT %d) as phones_partial " +
-                    "JOIN phone2color on phones_partial.id = phone2color.phoneId " +
-                    "JOIN colors on colors.id = phone2color.colorId";
+                    "LEFT JOIN phone2color on phones_partial.id = phone2color.phoneId " +
+                    "LEFT JOIN colors on colors.id = phone2color.colorId";
 
     private final ProductRowCallbackHandler<Phone> handler = new PhoneRowCallbackHandler();
 
