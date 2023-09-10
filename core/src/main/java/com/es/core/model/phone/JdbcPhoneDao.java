@@ -18,8 +18,6 @@ public class JdbcPhoneDao implements PhoneDao {
                     "LEFT JOIN phone2color on phones_partial.id = phone2color.phoneId " +
                     "LEFT JOIN colors on colors.id = phone2color.colorId";
 
-    private final ProductRowCallbackHandler<Phone> handler = new PhoneRowCallbackHandler();
-
     public Optional<Phone> get(final Long key) {
         throw new UnsupportedOperationException("TODO");
     }
@@ -29,6 +27,7 @@ public class JdbcPhoneDao implements PhoneDao {
     }
 
     public List<Phone> findAll(int offset, int limit) {
+        ProductRowCallbackHandler<Phone> handler = new PhoneRowCallbackHandler();
         String query = String.format(FIND_ALL_SQL, offset, limit);
         jdbcTemplate.query(query, handler);
         return handler.getResults();
