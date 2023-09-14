@@ -93,5 +93,6 @@
         </tr>
     </c:forEach>
 </table>
+<tags:pagination/>
 
 <script src="scripts/addToCart.js" type="text/javascript"></script>

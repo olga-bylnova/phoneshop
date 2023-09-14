@@ -53,7 +53,7 @@ public class JdbcPhoneDao implements PhoneDao {
 
     private String getSqlQuery(SortField sortField, SortOrder sortOrder, String searchQuery) {
         StringBuilder query;
-        if (searchQuery != null) {
+        if (searchQuery != null && !searchQuery.isEmpty()) {
             query = getSqlQueryWithSearch(sortField, sortOrder, searchQuery);
         } else {
             query = new StringBuilder(FIND_ALL_SQL);

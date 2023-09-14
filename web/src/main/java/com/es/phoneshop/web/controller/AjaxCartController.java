@@ -2,7 +2,6 @@ package com.es.phoneshop.web.controller;
 
 import com.es.core.cart.CartItemDto;
 import com.es.core.cart.CartService;
-import com.es.core.model.phone.dao.PhoneDao;
 import com.es.phoneshop.web.validator.QuantityValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +23,6 @@ public class AjaxCartController {
     private CartService cartService;
     @Resource
     private QuantityValidator validator;
-    @Resource
-    private PhoneDao phoneDao;
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
