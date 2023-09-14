@@ -24,7 +24,9 @@ public class JdbcPhoneDao implements PhoneDao {
     private final RowMapper<Phone> phoneRowMapper = new BeanPropertyRowMapper<>(Phone.class);
 
     public Optional<Phone> get(final Long key) {
-        throw new UnsupportedOperationException("TODO");
+        ProductRowCallbackHandler<Phone> handler = new PhoneRowCallbackHandler();
+        jdbcTemplate.query(JOIN_COLORS_TABLE_SQL, new Object[]{key}, handler);
+        return handler.getResults().stream().findAny();
     }
 
     public void save(final Phone phone) {
