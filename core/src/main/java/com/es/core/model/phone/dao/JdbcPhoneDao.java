@@ -13,10 +13,15 @@ import java.util.Optional;
 public class JdbcPhoneDao implements PhoneDao {
     @Resource
     private JdbcTemplate jdbcTemplate;
-    private static final String FIND_ALL_SQL =
-            "SELECT * FROM (SELECT * FROM phones OFFSET %d LIMIT %d) as phones_partial " +
-                    "LEFT JOIN phone2color on phones_partial.id = phone2color.phoneId " +
-                    "LEFT JOIN colors on colors.id = phone2color.colorId";
+    private static final String FIND_ALL_IN_STOCK_SQL = """    
+            SELECT * FROM (SELECT * FROM phones 
+            JOIN stocks on stocks.phoneId = phones.id
+            AND stocks.stock > 0 
+            AND phones.price IS NOT NULL
+            OFFSET %d LIMIT %d) as phones_partial 
+            LEFT JOIN phone2color on phones_partial.id = phone2color.phoneId 
+            LEFT JOIN colors on colors.id = phone2color.colorId            
+            """;
 
     public Optional<Phone> get(final Long key) {
         throw new UnsupportedOperationException("TODO");
@@ -28,7 +33,7 @@ public class JdbcPhoneDao implements PhoneDao {
 
     public List<Phone> findAll(int offset, int limit) {
         ProductRowCallbackHandler<Phone> handler = new PhoneRowCallbackHandler();
-        String query = String.format(FIND_ALL_SQL, offset, limit);
+        String query = String.format(FIND_ALL_IN_STOCK_SQL, offset, limit);
         jdbcTemplate.query(query, handler);
         return handler.getResults();
     }
