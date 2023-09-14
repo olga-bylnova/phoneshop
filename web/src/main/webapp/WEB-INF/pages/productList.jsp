@@ -5,9 +5,16 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"/>
-<p>
+<link rel="stylesheet" href="/styles/main.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
+<p id="errors" class="error">
+</p>
+<p id="success" class="success">
+</p>
+
 <div class="d-flex justify-content-between" id="header">
-    <span>Phones</span>
+    <tags:cartDisplay cart="${cart}"/>
     <form>
         <input class="form-control" placeholder="Search" name="query" value="${param.query}">
         <button>Search</button>
@@ -71,9 +78,20 @@
             <td>${phone.displaySizeInches}''</td>
             <td><fmt:formatNumber value="${phone.price}" type="currency"
                                   currencySymbol="$"/></td>
-            <td><input type="text"></td>
-            <td><input type="button"></td>
+            <td>
+                <form id="addToCart${phone.id}" action="${pageContext.servletContext.contextPath}/productList"
+                      onsubmit="handleButtonClick(this)">
+                    <input name="quantity"
+                           value="1">
+                    <input name="productId" value="${phone.id}" type="hidden"/>
+                    <span id="error${phone.id}"></span>
+                </form>
+            </td>
+            <td>
+                <button form="addToCart${phone.id}">Add to cart</button>
+            </td>
         </tr>
     </c:forEach>
 </table>
-</p>
+
+<script src="scripts/addToCart.js" type="text/javascript"></script>
