@@ -5,7 +5,7 @@
 <jsp:useBean id="prevPage" scope="request" type="java.lang.Integer"/>
 <jsp:useBean id="currentPage" scope="request" type="java.lang.Integer"/>
 
-<div>
+<div id="pagination">
     <a href="${pageContext.request.contextPath}/productList?page=${prevPage}&sort=${param.sort}&order=${param.order}&query=${param.query}">
         <i class="fa fa-caret-left"></i></a>
     <c:forEach var="i" begin="0" end="9">

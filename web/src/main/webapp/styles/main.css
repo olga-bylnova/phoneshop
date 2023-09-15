@@ -2,6 +2,16 @@
     color: greenyellow;
 }
 
-.errors {
+.error {
     color: red;
+}
+
+#pagination {
+    position: absolute;
+    right: 0;
+    font-size: 30px;
+}
+
+.form-control {
+    text-align: right;
 }

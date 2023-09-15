@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"/>
-<link rel="stylesheet" href="/styles/main.css"/>
+<link rel="stylesheet" href="styles/main.css"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 
 <p id="errors" class="error">
@@ -17,7 +17,7 @@
     <tags:cartDisplay cart="${cart}"/>
     <form>
         <input class="form-control" placeholder="Search" name="query" value="${param.query}">
-        <button>Search</button>
+        <button class="btn btn-light">Search</button>
     </form>
 </div>
 <table class="table table-bordered table-striped">
@@ -79,16 +79,16 @@
             <td><fmt:formatNumber value="${phone.price}" type="currency"
                                   currencySymbol="$"/></td>
             <td>
-                <form id="addToCart${phone.id}" action="${pageContext.servletContext.contextPath}/productList"
-                      onsubmit="handleButtonClick(this)">
-                    <input name="quantity"
+                <div id="addToCart${phone.id}">
+                    <input class="form-control"
+                           name="quantity"
                            value="1">
                     <input name="productId" value="${phone.id}" type="hidden"/>
-                    <span id="error${phone.id}"></span>
-                </form>
+                    <p class="error" id="error${phone.id}"></p>
+                </div>
             </td>
             <td>
-                <button form="addToCart${phone.id}">Add to cart</button>
+                <button class="btn btn-light" onclick="handleButtonClick(${phone.id})">Add to cart</button>
             </td>
         </tr>
     </c:forEach>

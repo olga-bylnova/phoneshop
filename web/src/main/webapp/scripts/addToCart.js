@@ -1,5 +1,5 @@
-function handleButtonClick(form) {
-    let id = $(form).find('[name="productId"]').val();
+function handleButtonClick(id) {
+    let form = $('#addToCart' + id);
     let quantity = $(form).find('input[name="quantity"]').val();
 
     let data = {};
@@ -8,21 +8,20 @@ function handleButtonClick(form) {
 
     $.ajax({
         type: "POST",
-        dataType: 'json',
         url: "http://localhost:8080/phoneshop-web/ajaxCart",
         headers: {
             'Content-Type': 'application/json'
         },
-        data: JSON.stringify(data)
+        data: JSON.stringify(data),
     })
         .done(function (data) {
-            console.log("added")
             $('#success').html("Item added to cart successfully");
             $('#errors').html("");
+            $('#error' + id).html("");
         })
         .fail(function (data) {
             $('#errors').html("Error adding to cart");
             $('#success').html("");
-            $('#error'+id).html("Wrong quantity value");
+            $('#error' + id).html("Wrong quantity value");
         });
 }
