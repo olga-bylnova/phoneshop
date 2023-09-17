@@ -16,6 +16,9 @@
 <div class="d-flex justify-content-between" id="header">
     <tags:cartDisplay cart="${cart}"/>
     <form>
+        <input type="hidden" name="sort" value="${param.sort}">
+        <input type="hidden" name="order" value="${param.order}">
+        <input type="hidden" name="page" value="${param.page}">
         <input class="form-control" placeholder="Search" name="query" value="${param.query}">
         <button class="btn btn-light">Search</button>
     </form>
