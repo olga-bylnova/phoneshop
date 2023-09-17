@@ -33,8 +33,21 @@ public class StringUtil {
             OR LOWER(model) LIKE \'%%%s%%\'
             """;
     public static final String FILTER_WITH_NUMBER_PARAMETER_SQL = """
-            displaySizeInches = %s
+            brand LIKE \'%%%s%%\'
+            OR model LIKE \'%%%s%%\'
+            OR displaySizeInches = %s
             OR price = %s
             """;
     public static final Pattern PATTERN = Pattern.compile("-?\\d+(\\.\\d+)?");
+    public static final String SAVE_SQL = """
+            INSERT INTO phones
+            (brand, model, price, displaySizeInches,
+            weightGr, lengthMm, widthMm, heightMm, announced,
+            deviceType, os, displayResolution, pixelDensity, displayTechnology,
+            backCameraMegapixels, frontCameraMegapixels, ramGb, internalStorageGb,
+            batteryCapacityMah, talkTimeHours, standByTimeHours, bluetooth, positioning,
+            imageUrl, description) values
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?, ?)
+            """;
 }

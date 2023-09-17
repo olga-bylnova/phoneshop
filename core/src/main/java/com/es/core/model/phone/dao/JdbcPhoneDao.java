@@ -8,9 +8,14 @@ import com.es.core.model.phone.handler.ProductRowCallbackHandler;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +35,58 @@ public class JdbcPhoneDao implements PhoneDao {
     }
 
     public void save(final Phone phone) {
-        throw new UnsupportedOperationException("TODO");
+//        Object[] parameters = {
+//                phone.getBrand(), phone.getModel(), phone.getPrice(),
+//                phone.getDisplaySizeInches(), phone.getWeightGr(), phone.getLengthMm(),
+//                phone.getWidthMm(), phone.getHeightMm(), phone.getAnnounced(),
+//                phone.getDeviceType(), phone.getOs(), phone.getDisplayResolution(),
+//                phone.getPixelDensity(), phone.getDisplayTechnology(),
+//                phone.getBackCameraMegapixels(), phone.getFrontCameraMegapixels(),
+//                phone.getRamGb(), phone.getInternalStorageGb(),
+//                phone.getBatteryCapacityMah(), phone.getTalkTimeHours(),
+//                phone.getStandByTimeHours(), phone.getBluetooth(),
+//                phone.getPositioning(), phone.getImageUrl(), phone.getDescription()
+//        };
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement statement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
+            setStatementParameters(statement, phone);
+            return statement;
+        }, keyHolder);
+
+        phone.setId((Long) keyHolder.getKey());
+    }
+
+    private void setStatementParameters(PreparedStatement statement, Phone phone) {
+        try {
+            statement.setString(1, phone.getBrand());
+            statement.setString(2, phone.getModel());
+            statement.setObject(3, phone.getPrice());
+            statement.setObject(4, phone.getDisplaySizeInches());
+            statement.setInt(5, phone.getWeightGr());
+            statement.setObject(6, phone.getLengthMm());
+            statement.setObject(7, phone.getWidthMm());
+            statement.setObject(8, phone.getHeightMm());
+            statement.setObject(9, phone.getAnnounced());
+            statement.setString(10, phone.getDeviceType());
+            statement.setString(11, phone.getOs());
+            statement.setString(12, phone.getDisplayResolution());
+            statement.setInt(13, phone.getPixelDensity());
+            statement.setString(14, phone.getDisplayTechnology());
+            statement.setObject(15, phone.getBackCameraMegapixels());
+            statement.setObject(16, phone.getFrontCameraMegapixels());
+            statement.setObject(17, phone.getRamGb());
+            statement.setObject(18, phone.getInternalStorageGb());
+            statement.setObject(19, phone.getBatteryCapacityMah());
+            statement.setObject(20, phone.getTalkTimeHours());
+            statement.setObject(21, phone.getStandByTimeHours());
+            statement.setString(22, phone.getBluetooth());
+            statement.setString(23, phone.getPositioning());
+            statement.setString(24, phone.getImageUrl());
+            statement.setString(25, phone.getDescription());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public List<Phone> findAll(int offset, int limit,
@@ -75,7 +131,7 @@ public class JdbcPhoneDao implements PhoneDao {
         }
         for (String word : splitQuery) {
             if (isNumeric(word)) {
-                Object[] args = new Object[2];
+                Object[] args = new Object[4];
                 Arrays.fill(args, word);
                 query.append(String.format(FILTER_WITH_NUMBER_PARAMETER_SQL, args));
             } else {
