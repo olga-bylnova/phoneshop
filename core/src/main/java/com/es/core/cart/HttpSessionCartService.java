@@ -13,12 +13,12 @@ import java.util.Optional;
 @Service
 public class HttpSessionCartService implements CartService {
     @Resource
-    private Cart cart;
+    private CartAccessor cart;
     @Resource
     private PhoneDao phoneDao;
 
     @Override
-    public Cart getCart() {
+    public CartAccessor getCart() {
         return cart;
     }
 
@@ -51,7 +51,7 @@ public class HttpSessionCartService implements CartService {
         throw new UnsupportedOperationException("TODO");
     }
 
-    private Optional<CartItem> findCartItemForUpdate(Cart cart, Long phoneId) {
+    private Optional<CartItem> findCartItemForUpdate(CartAccessor cart, Long phoneId) {
         List<CartItem> items = cart.getItems();
 
         return items.stream()
@@ -59,7 +59,7 @@ public class HttpSessionCartService implements CartService {
                 .findAny();
     }
 
-    private void recalculateCart(Cart cart) {
+    private void recalculateCart(CartAccessor cart) {
         cart.setTotalQuantity(cart.getItems()
                 .stream()
                 .map(CartItem::getQuantity)

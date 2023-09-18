@@ -3,15 +3,14 @@ package com.es.core.cart;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.WebApplicationContext;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class Cart implements Serializable {
+@Scope(value = "session", proxyMode = ScopedProxyMode.INTERFACES)
+public class Cart implements CartAccessor {
     private List<CartItem> items;
     private Long totalQuantity;
     private BigDecimal totalCost;

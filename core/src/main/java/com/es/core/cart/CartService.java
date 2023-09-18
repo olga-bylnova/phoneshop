@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface CartService {
 
-    Cart getCart();
+    CartAccessor getCart();
 
     void addPhone(Long phoneId, Long quantity);
 
