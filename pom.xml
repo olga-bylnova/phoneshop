@@ -12,8 +12,8 @@
         <module>web</module>
     </modules>
     <properties>
-        <maven.compiler.source>16</maven.compiler.source>
-        <maven.compiler.target>16</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <org.springframework-version>4.3.10.RELEASE</org.springframework-version>
     </properties>
     <dependencyManagement>
@@ -46,6 +46,11 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
+                <version>${org.springframework-version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
                 <version>${org.springframework-version}</version>
             </dependency>
 
