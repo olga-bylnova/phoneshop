@@ -3,13 +3,14 @@ package com.es.phoneshop.web.controller;
 import com.es.core.cart.CartItemDto;
 import com.es.core.cart.CartService;
 import com.es.core.model.exception.OutOfStockException;
-import com.es.phoneshop.web.validator.QuantityValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -19,13 +20,6 @@ import javax.validation.Valid;
 public class AjaxCartController {
     @Resource
     private CartService cartService;
-    @Resource
-    private QuantityValidator validator;
-
-    @InitBinder
-    protected void initBinder(WebDataBinder binder) {
-        binder.setValidator(validator);
-    }
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
