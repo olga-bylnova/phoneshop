@@ -1,5 +1,6 @@
 package com.es.core.cart;
 
+import com.es.core.model.exception.OutOfStockException;
 import com.es.core.model.phone.dao.PhoneDao;
 import com.es.core.model.phone.entity.Phone;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class HttpSessionCartService implements CartService {
     }
 
     @Override
-    public void addPhone(Long phoneId, Long quantity) {
+    public void addPhone(Long phoneId, Long quantity) throws OutOfStockException {
         Optional<Phone> phoneOptional = phoneDao.get(phoneId);
 
         if (phoneOptional.isPresent()) {
@@ -33,8 +34,11 @@ public class HttpSessionCartService implements CartService {
                 CartItem item = itemOptional.get();
                 quantity += item.getQuantity();
 
+                checkStockAvailable(phoneId, quantity);
+
                 item.setQuantity(quantity);
             } else {
+                checkStockAvailable(phoneId, quantity);
                 cart.getItems().add(new CartItem(phoneOptional.get(), quantity));
             }
             recalculateCart(cart);
@@ -74,5 +78,12 @@ public class HttpSessionCartService implements CartService {
             totalCost = totalCost.add(price.multiply(BigDecimal.valueOf(quantity)));
         }
         cart.setTotalCost(totalCost);
+    }
+
+    private void checkStockAvailable(Long phoneId, Long quantity) throws OutOfStockException {
+        int stockAvailable = phoneDao.getStockByPhoneId(phoneId);
+        if (stockAvailable < quantity) {
+            throw new OutOfStockException(phoneId, quantity.intValue(), stockAvailable);
+        }
     }
 }

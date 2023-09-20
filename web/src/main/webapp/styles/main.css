@@ -15,3 +15,21 @@
 .form-control {
     text-align: right;
 }
+
+#cartWrapper {
+    text-align: right;
+}
+
+#cartDisplay {
+    display: inline-block;
+}
+
+#phoneDescription {
+    margin-left: 10px;
+    width: 300px;
+    margin-right: 50px;
+}
+
+#phoneInfo {
+    margin-top: 50px;
+}

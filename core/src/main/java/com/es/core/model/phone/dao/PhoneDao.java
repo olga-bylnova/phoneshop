@@ -16,4 +16,6 @@ public interface PhoneDao {
                         SortField sortField,
                         SortOrder sortOrder,
                         String searchQuery);
+
+    int getStockByPhoneId(Long phoneId);
 }

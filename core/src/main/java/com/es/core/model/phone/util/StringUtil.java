@@ -50,4 +50,8 @@ public class StringUtil {
             (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
             ?, ?, ?, ?, ?, ?)
             """;
+    public static final String GET_STOCK_BY_PHONE_ID = """
+            SELECT stock FROM stocks
+            WHERE phoneId = ?
+            """;
 }

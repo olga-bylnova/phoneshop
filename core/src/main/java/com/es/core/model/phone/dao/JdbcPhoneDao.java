@@ -55,6 +55,10 @@ public class JdbcPhoneDao implements PhoneDao {
         return getPhoneColors(phones);
     }
 
+    public int getStockByPhoneId(Long phoneId) {
+        return jdbcTemplate.queryForObject(GET_STOCK_BY_PHONE_ID, Integer.class, phoneId);
+    }
+
     private List<Phone> getPhoneColors(List<Phone> phones) {
         ProductRowCallbackHandler<Phone> handler = new PhoneRowCallbackHandler();
         for (Phone phone : phones) {

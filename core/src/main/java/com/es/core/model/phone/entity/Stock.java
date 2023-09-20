@@ -1,7 +1,5 @@
 package com.es.core.model.phone.entity;
 
-import com.es.core.model.phone.entity.Phone;
-
 public class Stock {
     private Phone phone;
     private Integer stock;
