@@ -28,7 +28,7 @@ public class HttpSessionCartService implements CartService {
         Optional<Phone> phoneOptional = phoneDao.get(phoneId);
 
         if (phoneOptional.isPresent()) {
-            Optional<CartItem> itemOptional = findCartItemForUpdate(cart, phoneId);
+            Optional<CartItem> itemOptional = findCartItemForUpdate(phoneId);
 
             if (itemOptional.isPresent()) {
                 CartItem item = itemOptional.get();
@@ -41,7 +41,7 @@ public class HttpSessionCartService implements CartService {
                 checkStockAvailable(phoneId, quantity);
                 cart.getItems().add(new CartItem(phoneOptional.get(), quantity));
             }
-            recalculateCart(cart);
+            recalculateCart();
         }
     }
 
@@ -52,10 +52,12 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     public void remove(Long phoneId) {
-        throw new UnsupportedOperationException("TODO");
+        cart.getItems()
+                .removeIf(cartItem -> cartItem.getPhone().getId().equals(phoneId));
+        recalculateCart();
     }
 
-    private Optional<CartItem> findCartItemForUpdate(CartAccessor cart, Long phoneId) {
+    private Optional<CartItem> findCartItemForUpdate(Long phoneId) {
         List<CartItem> items = cart.getItems();
 
         return items.stream()
@@ -63,7 +65,7 @@ public class HttpSessionCartService implements CartService {
                 .findAny();
     }
 
-    private void recalculateCart(CartAccessor cart) {
+    private void recalculateCart() {
         cart.setTotalQuantity(cart.getItems()
                 .stream()
                 .map(CartItem::getQuantity)

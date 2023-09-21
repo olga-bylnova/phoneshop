@@ -1,4 +1,4 @@
-function handleButtonClick(id) {
+function addToCart(id) {
     let form = $('#addToCart' + id);
     let quantity = $(form).find('input[name="quantity"]').val();
 
@@ -33,4 +33,13 @@ function handleButtonClick(id) {
             $('#success').html("");
             $('#error' + id).html("Wrong quantity value");
         });
+}
+
+function deleteItem(id) {
+    let form = document.getElementById("deleteForm" + id);
+
+    let methodField = form.querySelector('input[name="_method"]');
+    methodField.value = "POST"; // Change to the desired HTTP method
+
+    form.submit();
 }

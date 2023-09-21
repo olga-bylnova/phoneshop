@@ -1,4 +1,4 @@
-package com.es.core.cart;
+package com.es.core.cart.dto;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;

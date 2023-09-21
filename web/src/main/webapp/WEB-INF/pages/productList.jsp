@@ -84,11 +84,11 @@
                     </div>
                 </td>
                 <td>
-                    <button class="btn btn-light" onclick="handleButtonClick(${phone.id})">Add to cart</button>
+                    <button class="btn btn-light" onclick="addToCart(${phone.id})">Add to cart</button>
                 </td>
             </tr>
         </c:forEach>
     </table>
     <tags:pagination/>
 </tags:master>
-<script src="scripts/addToCart.js" type="text/javascript"></script>
+<script src="scripts/manipulateCart.js" type="text/javascript"></script>

@@ -25,7 +25,7 @@
                            value="1">
                     <input name="productId" value="${phone.id}" type="hidden"/>
                     <p class="error" id="error${phone.id}"></p>
-                    <button class="btn btn-light" onclick="handleButtonClick(${phone.id})">Add to cart</button>
+                    <button class="btn btn-light" onclick="addToCart(${phone.id})">Add to cart</button>
                 </div>
             </div>
         </div>
@@ -127,4 +127,4 @@
     </div>
 
 </tags:master>
-<script src="${pageContext.request.contextPath}/scripts/addToCart.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/scripts/manipulateCart.js" type="text/javascript"></script>
