@@ -15,9 +15,18 @@ function handleButtonClick(id) {
         data: JSON.stringify(data),
     })
         .done(function (data) {
-            $('#success').html("Item added to cart successfully");
-            $('#errors').html("");
-            $('#error' + id).html("");
+            let parsedData = JSON.parse(data);
+            $('#cartDisplay').html(`My cart: ${parsedData.totalQuantity}
+                items ${parsedData.totalCost}$`);
+            if (parsedData.isError) {
+                $('#errors').html("Error adding to cart");
+                $('#success').html("");
+                $('#error' + id).html(parsedData.message);
+            } else {
+                $('#success').html(parsedData.message);
+                $('#errors').html("");
+                $('#error' + id).html("");
+            }
         })
         .fail(function (data) {
             $('#errors').html("Error adding to cart");
