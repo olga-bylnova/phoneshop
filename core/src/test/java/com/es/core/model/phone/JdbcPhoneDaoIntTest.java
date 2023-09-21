@@ -97,6 +97,13 @@ public class JdbcPhoneDaoIntTest {
         assertTrue(isListSortedByBrandDesc(searchResult));
     }
 
+    @Test
+    public void getProductCount() {
+        int result = jdbcPhoneDao.getProductCount("250");
+
+        assertEquals(25, result);
+    }
+
     private boolean isListSortedByPriceAsc(List<Phone> phones) {
         for (int i = 0; i < phones.size() - 1; i++) {
             if (phones.get(i).getPrice()

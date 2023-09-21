@@ -54,4 +54,10 @@ public class StringUtil {
             SELECT stock FROM stocks
             WHERE phoneId = ?
             """;
+    public static final String GET_COUNT_FIND_ALL_SQL = """    
+            SELECT count(1) FROM (SELECT * FROM phones
+            JOIN stocks on stocks.phoneId = phones.id
+            AND stocks.stock > 0
+            AND phones.price IS NOT NULL) as phones_partial
+            """;
 }

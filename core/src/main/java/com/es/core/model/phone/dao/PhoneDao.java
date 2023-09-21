@@ -18,4 +18,6 @@ public interface PhoneDao {
                         String searchQuery);
 
     int getStockByPhoneId(Long phoneId);
+
+    int getProductCount(String searchQuery);
 }
