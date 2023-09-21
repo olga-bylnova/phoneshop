@@ -5,8 +5,12 @@
 <jsp:useBean id="cart" scope="request" type="com.es.core.cart.CartAccessor"/>
 
 <tags:master>
-    <p id="errors" class="error"></p>
-    <p id="success" class="success"></p>
+    <c:if test="${not empty errors}">
+        <p class="error">
+            There was an error updating cart
+        </p>
+    </c:if>
+    <p id="success" class="success">${success}</p>
     <p>Cart</p>
 
     <div class="d-flex justify-content-between">
@@ -19,53 +23,62 @@
             </button>
         </a>
     </div>
-    <form:form method="post" modelAttribute="cartUpdateDto" id="updateForm">
-        <input type="hidden" name="_method" value="PUT"/>
-        <table class="table table-bordered table-striped">
-            <thead>
-            <tr class="table-secondary">
-                <td>Bran</td>
-                <td>Model</td>
-                <td>Color</td>
-                <td>Display size</td>
-                <td>Price</td>
-                <td>Quantity</td>
-                <td>Action</td>
-            </tr>
-            </thead>
+    <c:choose>
+        <c:when test="${not empty cart.items}">
+            <form:form method="post" modelAttribute="cartUpdateDto" id="updateForm">
+                <input type="hidden" name="_method" value="PUT"/>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr class="table-secondary">
+                        <td>Bran</td>
+                        <td>Model</td>
+                        <td>Color</td>
+                        <td>Display size</td>
+                        <td>Price</td>
+                        <td>Quantity</td>
+                        <td>Action</td>
+                    </tr>
+                    </thead>
 
-            <c:forEach var="item" items="${cart.items}" varStatus="i">
-                <tr>
-                    <td>${item.phone.brand}</td>
-                    <td>${item.phone.model}</td>
-                    <td>
-                        <c:forEach var="color" items="${item.phone.colors}">
-                            <p>${color.code}</p>
-                        </c:forEach>
-                    </td>
-                    <td>${item.phone.displaySizeInches}''</td>
-                    <td><fmt:formatNumber value="${item.phone.price}" type="currency"
-                                          currencySymbol="$"/></td>
-                    <td>
-                        <div id="updateCart${item.phone.id}">
-                            <c:set var="index" value="${i.index}"/>
-                            <form:hidden path="itemDtos[${index}].phoneId" value="${item.phone.id}"/>
-                            <form:input cssClass="form-control" path="itemDtos[${index}].quantity" value="${item.quantity}"/>
-                            <p class="error" id="error${item.phone.id}"></p>
-                        </div>
-                    </td>
-                    <td>
-                        <form method="post" id="deleteForm${item.phone.id}">
-                            <input type="hidden" name="_method"/>
-                            <input type="hidden" name="phoneId" value="${item.phone.id}">
-                            <button type="button" class="btn btn-light" onclick="deleteItem(${item.phone.id})">Delete
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            </c:forEach>
-        </table>
-        <input type="submit" value="Update"/>
-    </form:form>
+                    <c:forEach var="item" items="${cart.items}" varStatus="i">
+                        <tr>
+                            <td>${item.phone.brand}</td>
+                            <td>${item.phone.model}</td>
+                            <td>
+                                <c:forEach var="color" items="${item.phone.colors}">
+                                    <p>${color.code}</p>
+                                </c:forEach>
+                            </td>
+                            <td>${item.phone.displaySizeInches}''</td>
+                            <td><fmt:formatNumber value="${item.phone.price}" type="currency"
+                                                  currencySymbol="$"/></td>
+                            <td>
+                                <div id="updateCart${item.phone.id}">
+                                    <c:set var="index" value="${i.index}"/>
+                                    <form:hidden path="itemDtos[${index}].phoneId" value="${item.phone.id}"/>
+                                    <form:input cssClass="form-control" path="itemDtos[${index}].quantity"
+                                                value="${errors[item.phone.id].input != null ? errors[item.phone.id].input : item.quantity}"/>
+                                    <p class="error" id="error${item.phone.id}">${errors[item.phone.id].message}</p>
+                                </div>
+                            </td>
+                            <td>
+                                <form method="post" id="deleteForm${item.phone.id}">
+                                    <input type="hidden" name="_method"/>
+                                    <input type="hidden" name="phoneId" value="${item.phone.id}">
+                                    <button type="button" class="btn btn-light" onclick="deleteItem(${item.phone.id})">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
+                <input type="submit" class="btn btn-light" value="Update"/>
+            </form:form>
+        </c:when>
+        <c:otherwise>
+            <p>Cart is empty</p>
+        </c:otherwise>
+    </c:choose>
 </tags:master>
 <script src="${pageContext.request.contextPath}/scripts/manipulateCart.js" type="text/javascript"></script>

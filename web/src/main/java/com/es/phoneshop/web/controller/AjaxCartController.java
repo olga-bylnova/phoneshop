@@ -19,12 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
+import static com.es.core.model.phone.util.StringUtil.*;
+
 @Controller
 @RequestMapping(value = "/ajaxCart")
 public class AjaxCartController {
-    public static final String WRONG_QUANTITY_VALUE_MESSAGE = "Wrong quantity value";
-    public static final String OUT_STOCK_MESSAGE = "Out of stock, max available ";
-    public static final String SUCCESSFULLY_ADDED_TO_CART_MESSAGE = "Successfully added to cart";
     @Resource
     private CartService cartService;
 
@@ -37,12 +36,12 @@ public class AjaxCartController {
         }
 
         try {
-            cartService.addPhone(cartItemDto.getPhoneId().longValue(), cartItemDto.getQuantity().longValue());
+            cartService.addPhone(cartItemDto.getPhoneId(), cartItemDto.getQuantity());
         } catch (OutOfStockException e) {
-            return getJsonResponse(OUT_STOCK_MESSAGE + e.getStockAvailable(), true);
+            return getJsonResponse(OUT_OF_STOCK_MESSAGE + e.getStockAvailable(), true);
         }
 
-        return getJsonResponse(SUCCESSFULLY_ADDED_TO_CART_MESSAGE, false);
+        return getJsonResponse(SUCCESSFULLY_UPDATED_CART_MESSAGE, false);
     }
 
     private ResponseEntity<String> getJsonResponse(String message, boolean isError) throws JsonProcessingException {

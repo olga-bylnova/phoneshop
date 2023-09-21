@@ -19,4 +19,5 @@ public interface CartService {
     void update(Map<Long, Long> items);
 
     void remove(Long phoneId);
+    void checkStockAvailable(Long phoneId, Long quantity) throws OutOfStockException;
 }
