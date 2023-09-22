@@ -1,4 +1,4 @@
-package com.es.core.model.phone;
+package com.es.core.model.phone.entity;
 
 import java.util.Objects;
 
