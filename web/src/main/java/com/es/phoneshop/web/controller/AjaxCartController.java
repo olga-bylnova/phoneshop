@@ -3,7 +3,7 @@ package com.es.phoneshop.web.controller;
 import com.es.core.cart.CartAccessor;
 import com.es.core.cart.dto.CartInfoDto;
 import com.es.core.cart.dto.CartItemDto;
-import com.es.core.cart.CartService;
+import com.es.core.cart.service.CartService;
 import com.es.core.model.exception.OutOfStockException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

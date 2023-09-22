@@ -39,7 +39,7 @@ function deleteItem(id) {
     let form = document.getElementById("deleteForm" + id);
 
     let methodField = form.querySelector('input[name="_method"]');
-    methodField.value = "POST"; // Change to the desired HTTP method
+    methodField.value = "POST";
 
     form.submit();
 }

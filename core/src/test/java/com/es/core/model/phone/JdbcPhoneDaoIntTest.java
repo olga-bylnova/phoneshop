@@ -18,7 +18,7 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
-@ContextConfiguration("classpath*:/applicationContext-test.xml")
+@ContextConfiguration("classpath*:/applicationContext-testDao.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class JdbcPhoneDaoIntTest {
     @Resource
