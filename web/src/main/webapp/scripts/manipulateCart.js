@@ -36,10 +36,11 @@ function addToCart(id) {
 }
 
 function deleteItem(id) {
-    let form = document.getElementById("deleteForm" + id);
-
-    let methodField = form.querySelector('input[name="_method"]');
-    methodField.value = "POST";
-
-    form.submit();
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/phoneshop-web/cart",
+        data: {phoneId: id},
+    }).done(function (data) {
+        window.location.href = "http://localhost:8080/phoneshop-web/cart";
+    });
 }

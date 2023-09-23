@@ -62,13 +62,12 @@
                                 </div>
                             </td>
                             <td>
-                                <form method="post" id="deleteForm${item.phone.id}">
-                                    <input type="hidden" name="_method"/>
+                                <div>
                                     <input type="hidden" name="phoneId" value="${item.phone.id}">
                                     <button type="button" class="btn btn-light" onclick="deleteItem(${item.phone.id})">
                                         Delete
                                     </button>
-                                </form>
+                                </div>
                             </td>
                         </tr>
                     </c:forEach>

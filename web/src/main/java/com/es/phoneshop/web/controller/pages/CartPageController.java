@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class CartPageController {
     @RequestMapping(method = RequestMethod.PUT)
     public String updateCart(@ModelAttribute CartUpdateDto cartUpdateDto,
                              BindingResult bindingResult,
-                             Model model) {
+                             RedirectAttributes redirectAttributes) {
         validator.validate(cartUpdateDto, bindingResult);
 
         Map<Long, UpdateErrorDto> errors = validator.getErrors();
@@ -55,11 +56,10 @@ public class CartPageController {
 
             cartService.update(resultMap);
 
-            model.addAttribute("success", SUCCESSFULLY_UPDATED_CART_MESSAGE);
+            redirectAttributes.addFlashAttribute("success", SUCCESSFULLY_UPDATED_CART_MESSAGE);
         }
-        model.addAttribute("cart", cartService.getCart());
-        model.addAttribute("errors", errors);
-        return "cart";
+        redirectAttributes.addFlashAttribute("errors", errors);
+        return "redirect:/cart";
     }
 
     @RequestMapping(method = RequestMethod.POST)
