@@ -38,9 +38,9 @@ function addToCart(id) {
 function deleteItem(id) {
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/phoneshop-web/cart",
+        url: "/phoneshop-web/cart",
         data: {phoneId: id},
     }).done(function (data) {
-        window.location.href = "http://localhost:8080/phoneshop-web/cart";
+        window.location.href = "/phoneshop-web/cart";
     });
 }
