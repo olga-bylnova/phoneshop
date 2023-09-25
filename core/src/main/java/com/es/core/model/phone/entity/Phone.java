@@ -329,4 +329,9 @@ public class Phone {
         this.imageUrl = imageUrl;
         this.description = description;
     }
+
+    public Phone(Long id, BigDecimal price) {
+        this.id = id;
+        this.price = price;
+    }
 }

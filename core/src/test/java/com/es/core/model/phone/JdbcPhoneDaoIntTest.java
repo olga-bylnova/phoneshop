@@ -18,7 +18,7 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
-@ContextConfiguration("classpath*:/applicationContext-test.xml")
+@ContextConfiguration("classpath*:/applicationContext-testDao.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class JdbcPhoneDaoIntTest {
     @Resource
@@ -95,6 +95,13 @@ public class JdbcPhoneDaoIntTest {
         List<Phone> searchResult = jdbcPhoneDao.findAll(OFFSET, LIMIT, SortField.BRAND, SortOrder.DESC, null);
 
         assertTrue(isListSortedByBrandDesc(searchResult));
+    }
+
+    @Test
+    public void getProductCount() {
+        int result = jdbcPhoneDao.getProductCount("250");
+
+        assertEquals(25, result);
     }
 
     private boolean isListSortedByPriceAsc(List<Phone> phones) {

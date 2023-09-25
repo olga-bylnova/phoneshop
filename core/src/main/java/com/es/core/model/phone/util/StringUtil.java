@@ -50,4 +50,18 @@ public class StringUtil {
             (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
             ?, ?, ?, ?, ?, ?)
             """;
+    public static final String GET_STOCK_BY_PHONE_ID = """
+            SELECT stock FROM stocks
+            WHERE phoneId = ?
+            """;
+    public static final String GET_COUNT_FIND_ALL_SQL = """    
+            SELECT count(1) FROM (SELECT * FROM phones
+            JOIN stocks on stocks.phoneId = phones.id
+            AND stocks.stock > 0
+            AND phones.price IS NOT NULL) as phones_partial
+            """;
+    public static final String WRONG_QUANTITY_VALUE_MESSAGE = "Wrong quantity value";
+    public static final String OUT_OF_STOCK_MESSAGE = "Out of stock, max available ";
+    public static final String SUCCESSFULLY_ADDED_TO_CART_MESSAGE = "Successfully added to cart";
+    public static final String SUCCESSFULLY_UPDATED_CART_MESSAGE = "Successfully updated cart";
 }

@@ -9,4 +9,5 @@
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="location" value="WEB-INF/conf/application.properties"/>
     </bean>
+    <bean class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor" />
 </beans>

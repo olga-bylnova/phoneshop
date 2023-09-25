@@ -1,5 +1,8 @@
-package com.es.core.cart;
+package com.es.core.cart.service;
 
+import com.es.core.cart.CartAccessor;
+import com.es.core.cart.CartItem;
+import com.es.core.model.exception.OutOfStockException;
 import com.es.core.model.phone.dao.PhoneDao;
 import com.es.core.model.phone.entity.Phone;
 import org.springframework.stereotype.Service;
@@ -23,35 +26,57 @@ public class HttpSessionCartService implements CartService {
     }
 
     @Override
-    public void addPhone(Long phoneId, Long quantity) {
+    public void addPhone(Long phoneId, Long quantity) throws OutOfStockException {
         Optional<Phone> phoneOptional = phoneDao.get(phoneId);
 
         if (phoneOptional.isPresent()) {
-            Optional<CartItem> itemOptional = findCartItemForUpdate(cart, phoneId);
+            Optional<CartItem> itemOptional = findCartItemForUpdate(phoneId);
 
             if (itemOptional.isPresent()) {
                 CartItem item = itemOptional.get();
                 quantity += item.getQuantity();
 
+                checkStockAvailable(phoneId, quantity);
+
                 item.setQuantity(quantity);
             } else {
+                checkStockAvailable(phoneId, quantity);
                 cart.getItems().add(new CartItem(phoneOptional.get(), quantity));
             }
-            recalculateCart(cart);
+            recalculateCart();
         }
     }
 
     @Override
     public void update(Map<Long, Long> items) {
-        throw new UnsupportedOperationException("TODO");
+        for (Map.Entry<Long, Long> entry : items.entrySet()) {
+            Long key = entry.getKey();
+            Long value = entry.getValue();
+
+            Optional<CartItem> cartItem = cart.getItems()
+                    .stream()
+                    .filter(item -> item.getPhone().getId().equals(key))
+                    .findAny();
+            cartItem.ifPresent(item -> item.setQuantity(value));
+        }
+        recalculateCart();
     }
 
     @Override
     public void remove(Long phoneId) {
-        throw new UnsupportedOperationException("TODO");
+        cart.getItems()
+                .removeIf(cartItem -> cartItem.getPhone().getId().equals(phoneId));
+        recalculateCart();
     }
 
-    private Optional<CartItem> findCartItemForUpdate(CartAccessor cart, Long phoneId) {
+    public void checkStockAvailable(Long phoneId, Long quantity) throws OutOfStockException {
+        int stockAvailable = phoneDao.getStockByPhoneId(phoneId);
+        if (stockAvailable < quantity) {
+            throw new OutOfStockException(phoneId, quantity.intValue(), stockAvailable);
+        }
+    }
+
+    private Optional<CartItem> findCartItemForUpdate(Long phoneId) {
         List<CartItem> items = cart.getItems();
 
         return items.stream()
@@ -59,7 +84,7 @@ public class HttpSessionCartService implements CartService {
                 .findAny();
     }
 
-    private void recalculateCart(CartAccessor cart) {
+    private void recalculateCart() {
         cart.setTotalQuantity(cart.getItems()
                 .stream()
                 .map(CartItem::getQuantity)

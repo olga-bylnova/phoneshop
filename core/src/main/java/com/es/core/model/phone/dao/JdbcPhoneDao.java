@@ -49,10 +49,19 @@ public class JdbcPhoneDao implements PhoneDao {
                                SortField sortField,
                                SortOrder sortOrder,
                                String searchQuery) {
-        String querySql = getSqlQuery(sortField, sortOrder, searchQuery);
+        String querySql = getSqlQuery(sortField, sortOrder, searchQuery, false);
         List<Phone> phones = jdbcTemplate.query(querySql, new Object[]{offset, limit}, phoneRowMapper);
 
         return getPhoneColors(phones);
+    }
+
+    public int getStockByPhoneId(Long phoneId) {
+        return jdbcTemplate.queryForObject(GET_STOCK_BY_PHONE_ID, Integer.class, phoneId);
+    }
+
+    public int getProductCount(String searchQuery) {
+        String query = getSqlQuery(null, null, searchQuery, true);
+        return jdbcTemplate.queryForObject(query, Integer.class);
     }
 
     private List<Phone> getPhoneColors(List<Phone> phones) {
@@ -63,12 +72,19 @@ public class JdbcPhoneDao implements PhoneDao {
         return handler.getResults();
     }
 
-    private String getSqlQuery(SortField sortField, SortOrder sortOrder, String searchQuery) {
+    private String getSqlQuery(SortField sortField,
+                               SortOrder sortOrder,
+                               String searchQuery,
+                               boolean getCount) {
         StringBuilder query;
         if (searchQuery != null && !searchQuery.isEmpty()) {
-            query = getSqlQueryWithSearch(sortField, sortOrder, searchQuery);
+            query = getSqlQueryWithSearch(sortField, sortOrder, searchQuery, getCount);
         } else {
-            query = new StringBuilder(FIND_ALL_SQL);
+            if (getCount) {
+                query = new StringBuilder(GET_COUNT_FIND_ALL_SQL);
+            } else {
+                query = new StringBuilder(FIND_ALL_SQL);
+            }
             if (sortField != null) {
                 query.append(String.format(ORDER_BY_SQL, sortField.getColumnName(), sortOrder.name()));
             }
@@ -76,8 +92,16 @@ public class JdbcPhoneDao implements PhoneDao {
         return query.toString();
     }
 
-    private StringBuilder getSqlQueryWithSearch(SortField sortField, SortOrder sortOrder, String searchQuery) {
-        StringBuilder query = new StringBuilder(FIND_ALL_WITH_FILTER_SQL);
+    private StringBuilder getSqlQueryWithSearch(SortField sortField,
+                                                SortOrder sortOrder,
+                                                String searchQuery,
+                                                boolean getCount) {
+        StringBuilder query;
+        if (getCount) {
+            query = new StringBuilder(GET_COUNT_FIND_ALL_SQL);
+        } else {
+            query = new StringBuilder(FIND_ALL_WITH_FILTER_SQL);
+        }
         List<String> splitQuery = Arrays.stream(searchQuery
                         .toLowerCase()
                         .split("\\s+"))
@@ -101,7 +125,9 @@ public class JdbcPhoneDao implements PhoneDao {
         if (sortField != null) {
             query.append(String.format(ORDER_BY_SQL, sortField.getColumnName(), sortOrder.name()));
         }
-        query.append(OFFSET_LIMIT_SQL);
+        if (!getCount) {
+            query.append(OFFSET_LIMIT_SQL);
+        }
         return query;
     }
 
