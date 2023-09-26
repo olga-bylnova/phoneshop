@@ -1,5 +1,6 @@
 package com.es.core.model.order;
 
+import com.es.core.model.order.validation.PhoneNumberConstraint;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
@@ -26,6 +27,7 @@ public class Order implements Serializable {
     @NotEmpty
     private String deliveryAddress;
     @NotEmpty
+    @PhoneNumberConstraint
     private String contactPhoneNo;
 
     private OrderStatus status;

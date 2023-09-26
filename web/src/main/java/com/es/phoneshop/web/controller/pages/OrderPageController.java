@@ -2,9 +2,9 @@ package com.es.phoneshop.web.controller.pages;
 
 import com.es.core.cart.CartAccessor;
 import com.es.core.cart.service.CartService;
+import com.es.core.model.exception.OutOfStockException;
 import com.es.core.model.order.Order;
 import com.es.core.order.OrderService;
-import com.es.core.order.OutOfStockException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,14 +38,20 @@ public class OrderPageController {
     @RequestMapping(method = RequestMethod.POST)
     public String placeOrder(@Valid @ModelAttribute("order") Order order,
                              BindingResult bindingResult,
-                             Model model) throws OutOfStockException {
+                             Model model) {
         CartAccessor cart = cartService.getCart();
+        model.addAttribute("cart", cart);
         if (bindingResult.hasErrors()) {
-            model.addAttribute("cart", cart);
             return "order";
         } else {
-            return "productList";
+            try {
+                orderService.placeOrder(order);
+            } catch (OutOfStockException e) {
+                model.addAttribute("error", e.getMessage());
+                return "order";
+            }
+            cartService.clearCart();
+            return "redirect:/productList";
         }
-        //  orderService.placeOrder(null);
     }
 }

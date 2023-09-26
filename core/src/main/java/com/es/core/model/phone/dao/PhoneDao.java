@@ -20,4 +20,5 @@ public interface PhoneDao {
     int getStockByPhoneId(Long phoneId);
 
     int getProductCount(String searchQuery);
+    void updateProductStock(Long phoneId, int stock);
 }

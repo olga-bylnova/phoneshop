@@ -2,11 +2,17 @@ package com.es.core.model.order;
 
 import com.es.core.model.phone.entity.Phone;
 
-public class OrderItem {
+import java.io.Serializable;
+
+public class OrderItem implements Serializable {
     private Long id;
     private Phone phone;
     private Order order;
     private Long quantity;
+
+    public Long getId() {
+        return id;
+    }
 
     public Phone getPhone() {
         return phone;

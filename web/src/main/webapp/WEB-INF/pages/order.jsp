@@ -11,11 +11,15 @@
             </button>
         </a>
     </p>
-    <input type="hidden" name="_method" value="PUT"/>
+    <c:if test="${not empty error}">
+        <p class="error">
+            ${error}
+        </p>
+    </c:if>
     <table class="table table-bordered table-striped">
         <thead>
         <tr class="table-secondary">
-            <td>Bran</td>
+            <td>Brand</td>
             <td>Model</td>
             <td>Color</td>
             <td>Display size</td>

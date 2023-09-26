@@ -39,7 +39,7 @@ public class StringUtil {
             OR price = %s
             """;
     public static final Pattern PATTERN = Pattern.compile("-?\\d+(\\.\\d+)?");
-    public static final String SAVE_SQL = """
+    public static final String SAVE_PHONE_SQL = """
             INSERT INTO phones
             (brand, model, price, displaySizeInches,
             weightGr, lengthMm, widthMm, heightMm, announced,
@@ -49,6 +49,12 @@ public class StringUtil {
             imageUrl, description) values
             (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
             ?, ?, ?, ?, ?, ?)
+            """;
+    public static final String SAVE_ORDER_SQL = """
+            INSERT INTO orders
+            (subTotal, deliveryPrice, totalPrice, firstName,
+            lastName, deliveryAddress, contactPhoneNo, status) values
+            (?, ?, ?, ?, ?, ?, ?, ?)
             """;
     public static final String GET_STOCK_BY_PHONE_ID = """
             SELECT stock FROM stocks
@@ -60,8 +66,13 @@ public class StringUtil {
             AND stocks.stock > 0
             AND phones.price IS NOT NULL) as phones_partial
             """;
+    public static final String UPDATE_STOCKS_SQL = """
+            UPDATE stocks SET stock = ?
+            WHERE phoneId = ?;
+            """;
     public static final String WRONG_QUANTITY_VALUE_MESSAGE = "Wrong quantity value";
     public static final String OUT_OF_STOCK_MESSAGE = "Out of stock, max available ";
+    public static final String OUT_OF_STOCK_MESSAGE_WITH_PHONE_ID = "Phone %d out of stock, max available %d\n";
     public static final String SUCCESSFULLY_ADDED_TO_CART_MESSAGE = "Successfully added to cart";
     public static final String SUCCESSFULLY_UPDATED_CART_MESSAGE = "Successfully updated cart";
 }
