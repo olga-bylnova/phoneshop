@@ -31,4 +31,11 @@ public class OrderItem {
     public void setQuantity(final Long quantity) {
         this.quantity = quantity;
     }
+
+    public OrderItem(Long id, Phone phone, Order order, Long quantity) {
+        this.id = id;
+        this.phone = phone;
+        this.order = order;
+        this.quantity = quantity;
+    }
 }

@@ -1,14 +1,17 @@
 package com.es.core.model.order;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class Order
-{
+public class Order implements Serializable {
     private Long id;
     private List<OrderItem> orderItems;
     /**
-     *  A sum of order item prices;
+     * A sum of order item prices;
      */
     private BigDecimal subtotal;
     private BigDecimal deliveryPrice;
@@ -16,10 +19,13 @@ public class Order
      * <code>subtotal</code> + <code>deliveryPrice</code>
      */
     private BigDecimal totalPrice;
-
+    @NotEmpty
     private String firstName;
+    @NotEmpty
     private String lastName;
+    @NotEmpty
     private String deliveryAddress;
+    @NotEmpty
     private String contactPhoneNo;
 
     private OrderStatus status;

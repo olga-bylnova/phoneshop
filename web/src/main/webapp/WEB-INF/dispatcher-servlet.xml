@@ -13,6 +13,11 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
+    <bean id="messageSource"
+          class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basename" value="/WEB-INF/conf/messages"/>
+    </bean>
+
     <mvc:resources mapping="scripts/**" location="/scripts/"/>
     <mvc:resources mapping="styles/**" location="/styles/"/>
     <mvc:annotation-driven/>
