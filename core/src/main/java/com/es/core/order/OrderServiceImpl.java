@@ -8,7 +8,6 @@ import com.es.core.model.order.OrderItem;
 import com.es.core.model.order.OrderStatus;
 import com.es.core.model.order.dao.OrderDao;
 import com.es.core.model.phone.dao.PhoneDao;
-import com.es.core.model.phone.util.StringUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import static com.es.core.model.phone.util.StringUtil.*;
+import static com.es.core.model.phone.util.StringUtil.OUT_OF_STOCK_MESSAGE_WITH_PHONE_ID;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -56,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
         order.getOrderItems().forEach(orderItem -> {
             int stockByPhoneId = phoneDao.getStockByPhoneId(orderItem.getPhone().getId());
             if (stockByPhoneId < orderItem.getQuantity()) {
-                stringBuilder.append(String.format(OUT_OF_STOCK_MESSAGE_WITH_PHONE_ID, orderItem.getPhone().getId(), stockByPhoneId));
+                stringBuilder.append(String.format(OUT_OF_STOCK_MESSAGE_WITH_PHONE_ID, orderItem.getPhone().getId()));
 
                 idList.add(orderItem.getPhone().getId());
             }
@@ -65,6 +64,7 @@ public class OrderServiceImpl implements OrderService {
         if (!stringBuilder.isEmpty()) {
             idList.forEach(id -> {
                 order.getOrderItems().removeIf(item -> item.getPhone().getId().equals(id));
+                recalculateOrder(order);
                 cartService.remove(id);
             });
             throw new OutOfStockException(stringBuilder.toString());
@@ -72,5 +72,17 @@ public class OrderServiceImpl implements OrderService {
 
         orderDao.save(order);
         order.getOrderItems().forEach(orderItem -> phoneDao.updateProductStock(orderItem.getPhone().getId(), orderItem.getQuantity().intValue()));
+    }
+
+    private void recalculateOrder(Order order) {
+        BigDecimal subTotal = BigDecimal.ZERO;
+        for (OrderItem item : order.getOrderItems()) {
+            BigDecimal price = item.getPhone().getPrice();
+            long quantity = item.getQuantity();
+
+            subTotal = subTotal.add(price.multiply(BigDecimal.valueOf(quantity)));
+        }
+        order.setSubtotal(subTotal);
+        order.setTotalPrice(subTotal.add(order.getDeliveryPrice()));
     }
 }

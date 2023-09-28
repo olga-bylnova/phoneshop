@@ -41,7 +41,7 @@ public class AjaxCartController {
             return getJsonResponse(OUT_OF_STOCK_MESSAGE + e.getStockAvailable(), true);
         }
 
-        return getJsonResponse(SUCCESSFULLY_UPDATED_CART_MESSAGE, false);
+        return getJsonResponse(SUCCESSFULLY_ADDED_TO_CART_MESSAGE, false);
     }
 
     private ResponseEntity<String> getJsonResponse(String message, boolean isError) throws JsonProcessingException {
