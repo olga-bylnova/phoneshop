@@ -21,10 +21,12 @@ create table orders
     deliveryPrice   FLOAT,
     totalPrice      FLOAT,
     firstName       VARCHAR(50),
-    lastName       VARCHAR(50),
+    lastName        VARCHAR(50),
     deliveryAddress VARCHAR(100),
     contactPhoneNo  VARCHAR(10),
-    status          orderStatus
+    status          orderStatus,
+    secureId        VARCHAR(36),
+    CONSTRAINT UC_order UNIQUE (secureId)
 );
 
 create table phones

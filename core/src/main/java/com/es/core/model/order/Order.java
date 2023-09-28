@@ -31,6 +31,15 @@ public class Order implements Serializable {
     private String contactPhoneNo;
 
     private OrderStatus status;
+    private String secureId;
+
+    public String getSecureId() {
+        return secureId;
+    }
+
+    public void setSecureId(String secureId) {
+        this.secureId = secureId;
+    }
 
     public Long getId() {
         return id;

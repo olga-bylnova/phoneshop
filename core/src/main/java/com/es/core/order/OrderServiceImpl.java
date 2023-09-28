@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.es.core.model.phone.util.StringUtil.OUT_OF_STOCK_MESSAGE_WITH_PHONE_ID;
@@ -52,6 +53,7 @@ public class OrderServiceImpl implements OrderService {
     public void placeOrder(Order order) throws OutOfStockException {
         StringBuilder stringBuilder = new StringBuilder();
         ArrayList<Long> idList = new ArrayList<>();
+
         order.getOrderItems().forEach(orderItem -> {
             int stockByPhoneId = phoneDao.getStockByPhoneId(orderItem.getPhone().getId());
             if (stockByPhoneId < orderItem.getQuantity()) {
@@ -70,6 +72,7 @@ public class OrderServiceImpl implements OrderService {
             throw new OutOfStockException(stringBuilder.toString());
         }
 
+        order.setSecureId(UUID.randomUUID().toString());
         orderDao.save(order);
         order.getOrderItems().forEach(orderItem -> phoneDao.updateProductStock(orderItem.getPhone().getId(), orderItem.getQuantity().intValue()));
     }

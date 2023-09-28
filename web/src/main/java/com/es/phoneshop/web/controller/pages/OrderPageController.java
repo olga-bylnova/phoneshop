@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -38,7 +39,8 @@ public class OrderPageController {
     @RequestMapping(method = RequestMethod.POST)
     public String placeOrder(@Valid @ModelAttribute("order") Order order,
                              BindingResult bindingResult,
-                             Model model) {
+                             Model model,
+                             RedirectAttributes redirectAttributes) {
         CartAccessor cart = cartService.getCart();
         model.addAttribute("cart", cart);
         if (bindingResult.hasErrors()) {
@@ -51,7 +53,8 @@ public class OrderPageController {
                 return "order";
             }
             cartService.clearCart();
-            return "redirect:/productList";
+            redirectAttributes.addFlashAttribute("order", order);
+            return "redirect:/orderOverview/" + order.getSecureId();
         }
     }
 }

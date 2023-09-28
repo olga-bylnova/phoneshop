@@ -26,15 +26,14 @@ public class ProductDetailsPageController {
         Long phoneId = Long.valueOf(id);
         Optional<Phone> optionalPhone = phoneDao.get(phoneId);
 
-        if (optionalPhone.isPresent()) {
-            Phone phone = optionalPhone.get();
+        return optionalPhone.map(phone -> {
             model.addAttribute("phone", phone);
             model.addAttribute("cart", cartService.getCart());
 
             return "product";
-        } else {
+        }).orElseGet(() -> {
             model.addAttribute("id", id);
             return "/error/productNotFound";
-        }
+        });
     }
 }
