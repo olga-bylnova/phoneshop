@@ -1,9 +1,8 @@
 package com.es.core.model.order;
 
-import com.es.core.model.order.validation.PhoneNumberConstraint;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,8 +25,7 @@ public class Order implements Serializable {
     private String lastName;
     @NotEmpty
     private String deliveryAddress;
-    @NotEmpty
-    @PhoneNumberConstraint
+    @Pattern(regexp = "^\\+375\\d{9}$")
     private String contactPhoneNo;
 
     private OrderStatus status;

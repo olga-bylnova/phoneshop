@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.es.core.model.phone.util.StringUtil.SUCCESSFULLY_UPDATED_CART_MESSAGE;
+import static com.es.core.model.phone.util.StringUtilInformationMessage.SUCCESSFULLY_UPDATED_CART_MESSAGE;
 
 @Controller
 @RequestMapping(value = "/cart")

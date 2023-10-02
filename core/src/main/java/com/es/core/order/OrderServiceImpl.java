@@ -10,15 +10,15 @@ import com.es.core.model.order.dao.OrderDao;
 import com.es.core.model.phone.dao.PhoneDao;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.es.core.model.phone.util.StringUtil.OUT_OF_STOCK_MESSAGE_WITH_PHONE_ID;
+import static com.es.core.model.phone.util.StringUtilInformationMessage.OUT_OF_STOCK_MESSAGE_WITH_PHONE_ID;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -34,12 +34,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(CartAccessor cart) {
         Order order = new Order();
-        Random random = new Random();
 
         order.setOrderItems(cart.getItems()
                 .stream()
-                .map(item -> new OrderItem(random.nextLong(),
-                        item.getPhone(), order, item.getQuantity()))
+                .map(item -> new OrderItem(item.getPhone(), order, item.getQuantity()))
                 .collect(Collectors.toList()));
         order.setSubtotal(cart.getTotalCost());
         order.setDeliveryPrice(BigDecimal.valueOf(deliveryPrice));
@@ -50,6 +48,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public void placeOrder(Order order) throws OutOfStockException {
         StringBuilder stringBuilder = new StringBuilder();
         ArrayList<Long> idList = new ArrayList<>();
@@ -66,9 +65,9 @@ public class OrderServiceImpl implements OrderService {
         if (!stringBuilder.isEmpty()) {
             idList.forEach(id -> {
                 order.getOrderItems().removeIf(item -> item.getPhone().getId().equals(id));
-                recalculateOrder(order);
                 cartService.remove(id);
             });
+            recalculateOrder(order);
             throw new OutOfStockException(stringBuilder.toString());
         }
 

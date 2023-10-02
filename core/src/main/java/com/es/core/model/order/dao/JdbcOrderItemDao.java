@@ -15,8 +15,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import static com.es.core.model.phone.util.StringUtil.GET_ORDER_ITEMS_BY_ORDER_ID_SQL;
-import static com.es.core.model.phone.util.StringUtil.SAVE_ORDER_ITEM_SQL;
+import static com.es.core.model.phone.util.StringUtilSqlQuery.GET_ORDER_ITEMS_BY_ORDER_ID_SQL;
+import static com.es.core.model.phone.util.StringUtilSqlQuery.SAVE_ORDER_ITEM_SQL;
 
 @Component
 public class JdbcOrderItemDao implements OrderItemDao {

@@ -24,7 +24,7 @@ create table orders
     firstName       VARCHAR(50),
     lastName        VARCHAR(50),
     deliveryAddress VARCHAR(100),
-    contactPhoneNo  VARCHAR(10),
+    contactPhoneNo  VARCHAR(13),
     status          orderStatus,
     secureId        VARCHAR(36),
     additionalInfo        VARCHAR(300),

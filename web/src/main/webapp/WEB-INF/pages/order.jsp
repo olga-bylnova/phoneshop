@@ -93,7 +93,7 @@
                         </tr>
                         <tr>
                             <td>Phone*</td>
-                            <td><form:input path="contactPhoneNo" placeholder="Phone: +xxxxxxx"/>
+                            <td><form:input path="contactPhoneNo" placeholder="Phone: +375xxxxxxxxx"/>
                                 <form:errors path="contactPhoneNo" cssClass="error"/></td>
                         </tr>
                         <tr>

@@ -25,13 +25,13 @@ public class OrderOverviewPageController {
                                  Model model) {
         Optional<Order> orderOptional = orderDao.getOrderBySecureId(id);
 
-        return orderOptional.map(order -> {
-            model.addAttribute("order", order);
+        if (orderOptional.isPresent()) {
+            model.addAttribute("order", orderOptional.get());
             model.addAttribute("cart", cartService.getCart());
             return "orderOverview";
-        }).orElseGet(() -> {
+        } else {
             model.addAttribute("id", id);
             return "/error/orderNotFound";
-        });
+        }
     }
 }

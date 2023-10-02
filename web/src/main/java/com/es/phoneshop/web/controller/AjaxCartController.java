@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
-import static com.es.core.model.phone.util.StringUtil.*;
+import static com.es.core.model.phone.util.StringUtilInformationMessage.*;
 
 @Controller
 @RequestMapping(value = "/ajaxCart")

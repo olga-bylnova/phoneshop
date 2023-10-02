@@ -16,8 +16,8 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 
-import static com.es.core.model.phone.util.StringUtil.GET_ORDER_BY_SECURE_ID_SQL;
-import static com.es.core.model.phone.util.StringUtil.SAVE_ORDER_SQL;
+import static com.es.core.model.phone.util.StringUtilSqlQuery.GET_ORDER_BY_SECURE_ID_SQL;
+import static com.es.core.model.phone.util.StringUtilSqlQuery.SAVE_ORDER_SQL;
 
 @Component
 public class JdbcOrderDao implements OrderDao {
