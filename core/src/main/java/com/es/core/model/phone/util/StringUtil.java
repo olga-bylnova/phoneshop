@@ -53,8 +53,8 @@ public class StringUtil {
     public static final String SAVE_ORDER_SQL = """
             INSERT INTO orders
             (subTotal, deliveryPrice, totalPrice, firstName,
-            lastName, deliveryAddress, contactPhoneNo, status, secureId) values
-            (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            lastName, deliveryAddress, contactPhoneNo, status, secureId, additionalInfo) values
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """;
     public static final String GET_STOCK_BY_PHONE_ID = """
             SELECT stock FROM stocks
@@ -70,9 +70,18 @@ public class StringUtil {
             UPDATE stocks SET stock = ?
             WHERE phoneId = ?;
             """;
-        public static final String GET_ORDER_BY_SECURE_ID_SQL = """
+    public static final String GET_ORDER_BY_SECURE_ID_SQL = """
             SELECT * FROM orders
             WHERE secureId = ?
+            """;
+    public static final String SAVE_ORDER_ITEM_SQL = """
+            INSERT INTO orderItems
+            (phoneId, orderId, quantity) values
+            (?, ?, ?)
+            """;
+    public static final String GET_ORDER_ITEMS_BY_ORDER_ID_SQL = """
+            SELECT * FROM orderItems
+            WHERE orderId = ?
             """;
     public static final String WRONG_QUANTITY_VALUE_MESSAGE = "Wrong quantity value";
     public static final String OUT_OF_STOCK_MESSAGE = "Out of stock, max available ";

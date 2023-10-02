@@ -80,12 +80,12 @@
                 <td>Phone</td>
                 <td>${order.contactPhoneNo}</td>
             </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <textarea id="addInfo" placeholder="Additional information"></textarea>
-                </td>
-            </tr>
+            <c:if test="${not empty order.additionalInfo}">
+                <tr>
+                    <td>Additional info</td>
+                    <td>${order.additionalInfo}</td>
+                </tr>
+            </c:if>
         </table>
     </div>
     <a href="${pageContext.request.contextPath}/productList">

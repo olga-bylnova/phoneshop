@@ -10,6 +10,10 @@ public class OrderItem implements Serializable {
     private Order order;
     private Long quantity;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
@@ -43,5 +47,8 @@ public class OrderItem implements Serializable {
         this.phone = phone;
         this.order = order;
         this.quantity = quantity;
+    }
+
+    public OrderItem() {
     }
 }

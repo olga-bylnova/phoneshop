@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
@@ -22,10 +23,13 @@ import static com.es.core.model.phone.util.StringUtil.SAVE_ORDER_SQL;
 public class JdbcOrderDao implements OrderDao {
     @Resource
     private JdbcTemplate jdbcTemplate;
+    @Resource
+    private OrderItemDao orderItemDao;
 
     private final RowMapper<Order> orderRowMapper = new BeanPropertyRowMapper<>(Order.class);
 
     @Override
+    @Transactional
     public void save(Order order) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -35,11 +39,16 @@ public class JdbcOrderDao implements OrderDao {
         }, keyHolder);
 
         order.setId((Long) keyHolder.getKey());
+        order.getOrderItems().forEach(orderItem -> orderItemDao.save(orderItem));
     }
 
     @Override
+    @Transactional
     public Optional<Order> getOrderBySecureId(String secureId) {
         List<Order> orders = jdbcTemplate.query(GET_ORDER_BY_SECURE_ID_SQL, new Object[]{secureId}, orderRowMapper);
+        orders.stream()
+                .findAny()
+                .ifPresent(order -> order.setOrderItems(orderItemDao.getOrderItemsByOrderId(order.getId(), order)));
         return orders.stream().findAny();
     }
 
@@ -54,6 +63,7 @@ public class JdbcOrderDao implements OrderDao {
             statement.setString(7, order.getContactPhoneNo());
             statement.setString(8, order.getStatus().name());
             statement.setString(9, order.getSecureId());
+            statement.setString(10, order.getAdditionalInfo());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

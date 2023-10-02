@@ -32,6 +32,15 @@ public class Order implements Serializable {
 
     private OrderStatus status;
     private String secureId;
+    private String additionalInfo;
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
 
     public String getSecureId() {
         return secureId;

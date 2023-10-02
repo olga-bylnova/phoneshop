@@ -3,6 +3,7 @@ drop table if exists colors;
 drop table if exists stocks;
 drop table if exists phones;
 drop table if exists orders;
+drop table if exists orderItems;
 drop type if exists orderStatus;
 
 create type orderStatus as ENUM ('NEW', 'DELIVERED', 'REJECTED');
@@ -26,6 +27,7 @@ create table orders
     contactPhoneNo  VARCHAR(10),
     status          orderStatus,
     secureId        VARCHAR(36),
+    additionalInfo        VARCHAR(300),
     CONSTRAINT UC_order UNIQUE (secureId)
 );
 
@@ -58,6 +60,16 @@ create table phones
     imageUrl              VARCHAR(254),
     description           VARCHAR(4096),
     CONSTRAINT UC_phone UNIQUE (brand, model)
+);
+
+create table orderItems
+(
+    id       BIGINT AUTO_INCREMENT PRIMARY KEY,
+    phoneId  BIGINT,
+    orderId  BIGINT,
+    quantity INT,
+    CONSTRAINT FK_orderItems_phoneId FOREIGN KEY (phoneId) REFERENCES phones (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT FK_orderItems_orderId FOREIGN KEY (orderId) REFERENCES orders (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 create table phone2color

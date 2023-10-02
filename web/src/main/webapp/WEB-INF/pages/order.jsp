@@ -99,7 +99,7 @@
                         <tr>
                             <td></td>
                             <td>
-                                <textarea id="addInfo" placeholder="Additional information"></textarea>
+                                <form:input path="additionalInfo" placeholder="Additional information"/>
                             </td>
                         </tr>
                     </table>
