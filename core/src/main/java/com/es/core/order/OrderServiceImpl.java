@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
         order.setDeliveryPrice(BigDecimal.valueOf(deliveryPrice));
         order.setTotalPrice(order.getSubtotal().add(order.getDeliveryPrice()));
         order.setStatus(OrderStatus.NEW);
+        order.setOrderDate(new Date());
 
         return order;
     }

@@ -53,8 +53,9 @@ public class StringUtilSqlQuery {
     public static final String SAVE_ORDER_SQL = """
             INSERT INTO orders
             (subTotal, deliveryPrice, totalPrice, firstName,
-            lastName, deliveryAddress, contactPhoneNo, status, secureId, additionalInfo) values
-            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            lastName, deliveryAddress, contactPhoneNo, status, secureId, additionalInfo,
+            orderDate) values
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """;
     public static final String GET_STOCK_BY_PHONE_ID = """
             SELECT stock FROM stocks
@@ -83,4 +84,7 @@ public class StringUtilSqlQuery {
             SELECT * FROM orderItems
             WHERE orderId = ?
             """;
+
+    public static final String GET_ORDERS_SQL = """
+            SELECT * FROM orders""";
 }

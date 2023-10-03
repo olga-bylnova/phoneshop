@@ -5,6 +5,7 @@
 <jsp:useBean id="cart" scope="request" type="com.es.core.cart.CartAccessor"/>
 
 <tags:master>
+    <tags:cartDisplay cart="${cart}"/>
     <c:if test="${not empty errors}">
         <p class="error">
             There was an error updating cart
