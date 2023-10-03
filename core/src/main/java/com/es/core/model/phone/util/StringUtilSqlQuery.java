@@ -87,4 +87,13 @@ public class StringUtilSqlQuery {
 
     public static final String GET_ORDERS_SQL = """
             SELECT * FROM orders""";
+    public static final String GET_ORDER_BY_ID_SQL = """
+            SELECT * FROM orders
+            WHERE id = ?
+            """;
+
+    public static final String UPDATE_ORDER_STATUS_SQL = """
+            UPDATE orders SET status = ?
+            WHERE id = ?;
+            """;
 }

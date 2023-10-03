@@ -19,9 +19,9 @@
                     <td>Status</td>
                 </tr>
                 </thead>
-                <c:forEach var="order" items="${orders}" varStatus="i">
+                <c:forEach var="order" items="${orders}">
                     <tr>
-                        <td>${order.id}</td>
+                        <td><a href="${pageContext.request.contextPath}/admin/orders/${order.id}">${order.id}</a></td>
                         <td>${order.firstName.concat(" ").concat(order.lastName)}</td>
                         <td>${order.contactPhoneNo}</td>
                         <td>${order.deliveryAddress}</td>

@@ -27,7 +27,8 @@ create table orders
     contactPhoneNo  VARCHAR(13),
     status          orderStatus,
     secureId        VARCHAR(36),
-    additionalInfo        VARCHAR(300),
+    additionalInfo  VARCHAR(300),
+    orderDate       TIMESTAMP,
     CONSTRAINT UC_order UNIQUE (secureId)
 );
 

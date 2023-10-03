@@ -1,6 +1,7 @@
 package com.es.core.model.order.dao;
 
 import com.es.core.model.order.Order;
+import com.es.core.model.order.OrderStatus;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -56,6 +57,19 @@ public class JdbcOrderDao implements OrderDao {
         List<Order> orders = jdbcTemplate.query(GET_ORDERS_SQL, orderRowMapper);
         orders.forEach(order -> order.setOrderItems(orderItemDao.getOrderItemsByOrderId(order.getId(), order)));
         return orders;
+    }
+
+    @Transactional
+    public Optional<Order> getOrderById(Long id) {
+        List<Order> orders = jdbcTemplate.query(GET_ORDER_BY_ID_SQL, new Object[]{id}, orderRowMapper);
+        orders.stream()
+                .findAny()
+                .ifPresent(order -> order.setOrderItems(orderItemDao.getOrderItemsByOrderId(order.getId(), order)));
+        return orders.stream().findAny();
+    }
+
+    public void updateOrderStatusByOrderId(Long id, OrderStatus status) {
+        jdbcTemplate.update(UPDATE_ORDER_STATUS_SQL, status.name(), id);
     }
 
     private void setStatementParameters(PreparedStatement statement, Order order) {
