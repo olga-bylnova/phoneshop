@@ -21,4 +21,5 @@ public interface CartService {
 
     void remove(Long phoneId);
     void checkStockAvailable(Long phoneId, Long quantity) throws OutOfStockException;
+    void clearCart();
 }

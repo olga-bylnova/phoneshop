@@ -13,8 +13,8 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.es.core.model.phone.util.StringUtil.OUT_OF_STOCK_MESSAGE;
-import static com.es.core.model.phone.util.StringUtil.WRONG_QUANTITY_VALUE_MESSAGE;
+import static com.es.core.model.phone.util.StringUtilInformationMessage.OUT_OF_STOCK_MESSAGE;
+import static com.es.core.model.phone.util.StringUtilInformationMessage.WRONG_QUANTITY_VALUE_MESSAGE;
 
 @Component
 public class QuantityValidator implements Validator {

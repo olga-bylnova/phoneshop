@@ -2,11 +2,21 @@ package com.es.core.model.order;
 
 import com.es.core.model.phone.entity.Phone;
 
-public class OrderItem {
+import java.io.Serializable;
+
+public class OrderItem implements Serializable {
     private Long id;
     private Phone phone;
     private Order order;
     private Long quantity;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 
     public Phone getPhone() {
         return phone;
@@ -30,5 +40,14 @@ public class OrderItem {
 
     public void setQuantity(final Long quantity) {
         this.quantity = quantity;
+    }
+
+    public OrderItem(Phone phone, Order order, Long quantity) {
+        this.phone = phone;
+        this.order = order;
+        this.quantity = quantity;
+    }
+
+    public OrderItem() {
     }
 }

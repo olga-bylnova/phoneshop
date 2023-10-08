@@ -27,8 +27,7 @@ public class ProductDetailsPageController {
         Optional<Phone> optionalPhone = phoneDao.get(phoneId);
 
         if (optionalPhone.isPresent()) {
-            Phone phone = optionalPhone.get();
-            model.addAttribute("phone", phone);
+            model.addAttribute("phone", optionalPhone.get());
             model.addAttribute("cart", cartService.getCart());
 
             return "product";

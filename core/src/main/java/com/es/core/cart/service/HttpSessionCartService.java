@@ -76,6 +76,11 @@ public class HttpSessionCartService implements CartService {
         }
     }
 
+    public void clearCart() {
+        cart.getItems().clear();
+        recalculateCart();
+    }
+
     private Optional<CartItem> findCartItemForUpdate(Long phoneId) {
         List<CartItem> items = cart.getItems();
 

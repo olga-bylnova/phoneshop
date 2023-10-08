@@ -18,7 +18,7 @@
             <button class="btn btn-light">Back to product list
             </button>
         </a>
-        <a href="#" id="orderButton">
+        <a href="${pageContext.request.contextPath}/order" id="orderButton">
             <button class="btn btn-light">Order
             </button>
         </a>

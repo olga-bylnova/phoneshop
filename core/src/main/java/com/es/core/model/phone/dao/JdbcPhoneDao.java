@@ -5,12 +5,15 @@ import com.es.core.model.phone.entity.SortField;
 import com.es.core.model.phone.entity.SortOrder;
 import com.es.core.model.phone.handler.PhoneRowCallbackHandler;
 import com.es.core.model.phone.handler.ProductRowCallbackHandler;
+import com.es.core.model.phone.util.StringUtil;
+import com.es.core.model.phone.util.StringUtilSqlQuery;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
@@ -21,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.es.core.model.phone.util.StringUtil.*;
+import static com.es.core.model.phone.util.StringUtilSqlQuery.*;
 
 @Component
 public class JdbcPhoneDao implements PhoneDao {
@@ -37,7 +41,7 @@ public class JdbcPhoneDao implements PhoneDao {
     public void save(final Phone phone) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
-            PreparedStatement statement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement(SAVE_PHONE_SQL, Statement.RETURN_GENERATED_KEYS);
             setStatementParameters(statement, phone);
             return statement;
         }, keyHolder);
@@ -62,6 +66,12 @@ public class JdbcPhoneDao implements PhoneDao {
     public int getProductCount(String searchQuery) {
         String query = getSqlQuery(null, null, searchQuery, true);
         return jdbcTemplate.queryForObject(query, Integer.class);
+    }
+
+    @Transactional
+    public void updateProductStock(Long phoneId, int stock) {
+        int originalStock = getStockByPhoneId(phoneId);
+        jdbcTemplate.update(UPDATE_STOCKS_SQL, originalStock - stock, phoneId);
     }
 
     private List<Phone> getPhoneColors(List<Phone> phones) {
