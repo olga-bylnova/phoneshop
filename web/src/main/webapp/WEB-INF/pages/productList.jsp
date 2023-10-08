@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <tags:master>
+    <tags:cartDisplay cart="${cart}"/>
     <p id="errors" class="error"></p>
     <p id="success" class="success"></p>
 

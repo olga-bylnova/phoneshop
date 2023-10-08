@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public class Order implements Serializable {
@@ -31,6 +32,15 @@ public class Order implements Serializable {
     private OrderStatus status;
     private String secureId;
     private String additionalInfo;
+    private Date orderDate;
+
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
 
     public String getAdditionalInfo() {
         return additionalInfo;

@@ -33,3 +33,9 @@
 #phoneInfo {
     margin-top: 50px;
 }
+
+#adminButtonPanel {
+    display: flex;
+    justify-content: space-between;
+    width: 100px;
+}

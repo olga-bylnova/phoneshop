@@ -1,5 +1,4 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<jsp:useBean id="cart" scope="request" type="com.es.core.cart.CartAccessor"/>
 
 <html>
 <head>
@@ -11,9 +10,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 </head>
 <body class="product-list">
-<header>
-    <tags:cartDisplay cart="${cart}"/>
-</header>
 <main>
     <jsp:doBody/>
 </main>
