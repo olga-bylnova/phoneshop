@@ -1,4 +1,5 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -11,6 +12,12 @@
 </head>
 <body class="product-list">
 <main>
+    <div id="admin">
+        <div id="adminLinks">
+            <a href="${pageContext.request.contextPath}/admin/orders">Admin</a>
+            <a href="${pageContext.request.contextPath}/logout">Logout</a>
+        </div>
+    </div>
     <jsp:doBody/>
 </main>
 <p>(c) Expert-soft</p>
