@@ -1,5 +1,6 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <html>
 <head>
@@ -14,8 +15,15 @@
 <main>
     <div id="admin">
         <div id="adminLinks">
-            <a href="${pageContext.request.contextPath}/admin/orders">Admin</a>
-            <a href="${pageContext.request.contextPath}/logout">Logout</a>
+            <sec:authorize access="isAuthenticated()">
+                <a href="${pageContext.request.contextPath}/admin/orders">Orders</a>
+            </sec:authorize>
+            <sec:authorize access="isAuthenticated()">
+                <a href="${pageContext.request.contextPath}/logout">Logout</a>
+            </sec:authorize>
+            <sec:authorize access="isAnonymous()">
+                <a href="${pageContext.request.contextPath}/admin/orders">Login</a>
+            </sec:authorize>
         </div>
     </div>
     <jsp:doBody/>
