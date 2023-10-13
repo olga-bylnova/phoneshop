@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/main.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/main.js" type="text/javascript"></script>
 </head>
 <body class="product-list">
 <main>
@@ -19,10 +20,10 @@
                 <a href="${pageContext.request.contextPath}/admin/orders">Orders</a>
             </sec:authorize>
             <sec:authorize access="isAuthenticated()">
-                <a href="${pageContext.request.contextPath}/logout">Logout</a>
+                <a id="logoutLink" href="${pageContext.request.contextPath}/logout">Logout</a>
             </sec:authorize>
             <sec:authorize access="isAnonymous()">
-                <a href="${pageContext.request.contextPath}/admin/orders">Login</a>
+                <a href="${pageContext.request.contextPath}/login">Login</a>
             </sec:authorize>
         </div>
     </div>
