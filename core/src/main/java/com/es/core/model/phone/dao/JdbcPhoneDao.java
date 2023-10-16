@@ -126,7 +126,7 @@ public class JdbcPhoneDao implements PhoneDao {
                 query.append(String.format(FILTER_WITH_NUMBER_PARAMETER_SQL, args));
             } else {
                 Object[] args = new Object[3];
-                Arrays.fill(args, word);
+                Arrays.fill(args, escapeString(word));
                 query.append(String.format(FILTER_WITH_STRING_PARAMETER_SQL, args));
             }
             query.append("OR ");
@@ -139,6 +139,13 @@ public class JdbcPhoneDao implements PhoneDao {
             query.append(OFFSET_LIMIT_SQL);
         }
         return query;
+    }
+
+    private String escapeString(String input) {
+        if (input == null) {
+            return null;
+        }
+        return input.replace("'", "''");
     }
 
     private boolean isNumeric(String strNum) {
