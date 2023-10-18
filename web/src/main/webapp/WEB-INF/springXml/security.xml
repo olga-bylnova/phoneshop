@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+         xmlns:b="http://www.springframework.org/schema/beans"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security.xsd">
+    <b:bean id="customAuthenticationSuccessHandler" class="com.es.phoneshop.web.controller.pages.handler.CustomAuthenticationSuccessHandler"/>
+    <b:bean id="requestFilter" class="com.es.phoneshop.web.controller.pages.filter.RequestCacheFilter"/>
+    <http>
+        <intercept-url pattern="/admin/*"
+                       access="hasRole('ROLE_ADMIN')" />
+        <form-login authentication-success-handler-ref="customAuthenticationSuccessHandler"/>
+        <logout/>
+        <csrf disabled="true"/>
+        <custom-filter ref="requestFilter" before="SECURITY_CONTEXT_FILTER"/>
+    </http>
+
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="user" password="password" authorities="ROLE_ADMIN"/>
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+</b:beans>
