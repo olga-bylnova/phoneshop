@@ -23,6 +23,12 @@ public class StringUtilSqlQuery {
             LEFT JOIN colors on colors.id = phone2color.colorId
             WHERE phones.id = ?;
             """;
+    public static final String FIND_BY_MODEL_SQL = """
+            SELECT * FROM phones
+            LEFT JOIN phone2color on phones.id = phone2color.phoneId
+            LEFT JOIN colors on colors.id = phone2color.colorId
+            WHERE LOWER(phones.model)=LOWER(?) AND phones.price > 0;
+            """;
     public static final String ORDER_BY_SQL = """
             ORDER BY %s %s
             """;

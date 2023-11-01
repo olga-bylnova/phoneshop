@@ -38,6 +38,12 @@ public class JdbcPhoneDao implements PhoneDao {
         return handler.getResults().stream().findAny();
     }
 
+    public Optional<Phone> getByModel(String modelName) {
+        ProductRowCallbackHandler<Phone> handler = new PhoneRowCallbackHandler();
+        jdbcTemplate.query(FIND_BY_MODEL_SQL, new Object[]{modelName}, handler);
+        return handler.getResults().stream().findAny();
+    }
+
     public void save(final Phone phone) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
