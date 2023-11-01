@@ -14,6 +14,7 @@
 </head>
 <body class="product-list">
 <main>
+    <a href="${pageContext.request.contextPath}/quickOrderEntry">Quick order entry</a>
     <div id="admin">
         <div id="adminLinks">
             <sec:authorize access="isAuthenticated()">

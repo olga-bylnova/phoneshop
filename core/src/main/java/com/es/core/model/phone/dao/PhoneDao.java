@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface PhoneDao {
     Optional<Phone> get(Long key);
+    Optional<Phone> getByModel(String modelName);
 
     void save(Phone phone);
 

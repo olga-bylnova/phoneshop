@@ -5,6 +5,7 @@ import com.es.core.cart.CartItem;
 import com.es.core.model.exception.OutOfStockException;
 import com.es.core.model.phone.dao.PhoneDao;
 import com.es.core.model.phone.entity.Phone;
+import com.es.core.quickorderentry.QuickOrderEntry;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -27,24 +28,26 @@ public class HttpSessionCartService implements CartService {
 
     @Override
     public void addPhone(Long phoneId, Long quantity) throws OutOfStockException {
+        checkStockAvailable(phoneId, quantity);
         Optional<Phone> phoneOptional = phoneDao.get(phoneId);
 
         if (phoneOptional.isPresent()) {
-            Optional<CartItem> itemOptional = findCartItemForUpdate(phoneId);
-
-            if (itemOptional.isPresent()) {
-                CartItem item = itemOptional.get();
-                quantity += item.getQuantity();
-
-                checkStockAvailable(phoneId, quantity);
-
-                item.setQuantity(quantity);
-            } else {
-                checkStockAvailable(phoneId, quantity);
-                cart.getItems().add(new CartItem(phoneOptional.get(), quantity));
-            }
-            recalculateCart();
+            addPhone(phoneOptional.get(), quantity);
         }
+    }
+
+    public void addPhone(Phone phone, Long quantity) throws OutOfStockException {
+        checkStockAvailable(phone.getId(), quantity);
+        Optional<CartItem> itemOptional = findCartItemForUpdate(phone.getId());
+        if (itemOptional.isPresent()) {
+            CartItem item = itemOptional.get();
+            quantity += item.getQuantity();
+
+            item.setQuantity(quantity);
+        } else {
+            cart.getItems().add(new CartItem(phone, quantity));
+        }
+        recalculateCart();
     }
 
     @Override
@@ -71,6 +74,12 @@ public class HttpSessionCartService implements CartService {
 
     public void checkStockAvailable(Long phoneId, Long quantity) throws OutOfStockException {
         int stockAvailable = phoneDao.getStockByPhoneId(phoneId);
+        Optional<CartItem> itemOptional = findCartItemForUpdate(phoneId);
+
+        if (itemOptional.isPresent()) {
+            CartItem item = itemOptional.get();
+            quantity += item.getQuantity();
+        }
         if (stockAvailable < quantity) {
             throw new OutOfStockException(phoneId, quantity.intValue(), stockAvailable);
         }
